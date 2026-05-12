@@ -1,0 +1,215 @@
+/* Idealist Sans Font — loaded via <link> in layout.tsx (non-blocking) */
+
+@import "tailwindcss";
+
+:root {
+  /* Design System Colors */
+  --raw-paper: #F5F0E8;
+  --white: #FFFFFF;
+  --ink: #0D0D0D;
+  --ash: #A8A49C;
+  
+  /* Stone Accent Colors */
+  --turquoise: #40E0D0;
+  --malachite: #0BDA51;
+  --lapis: #26619C;
+  
+  /* Background */
+  --background: var(--raw-paper);
+  --foreground: var(--ink);
+  
+  /* Typography — Idealist Sans everywhere */
+  --font-display: 'IdealistSans', sans-serif;
+  --font-mono: 'IdealistSans', sans-serif;
+  --font-sans: 'IdealistSans', sans-serif;
+}
+
+@theme inline {
+  --color-raw-paper: var(--raw-paper);
+  --color-white: var(--white);
+  --color-ink: var(--ink);
+  --color-ash: var(--ash);
+  --color-turquoise: var(--turquoise);
+  --color-malachite: var(--malachite);
+  --color-lapis: var(--lapis);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+/* Base Styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography */
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* System Labels */
+.system-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+
+/* Buttons */
+.btn-primary {
+  background: var(--ink);
+  color: var(--white);
+  padding: 12px 24px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: var(--ash);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--ink);
+  padding: 12px 24px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid var(--ink);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--ink);
+  color: var(--white);
+}
+
+/* Section Dividers */
+.divider {
+  height: 1px;
+  background: var(--ink);
+  width: 100%;
+}
+
+.divider-thick {
+  height: 4px;
+  background: var(--ink);
+  width: 100%;
+}
+
+/* Cards */
+.card {
+  background: var(--white);
+  border: 1px solid var(--ink);
+  padding: 0;
+}
+
+.card-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+/* Input Styles */
+input, textarea {
+  font-family: var(--font-mono);
+  border: 1px solid var(--ash);
+  padding: 12px 16px;
+  font-size: 14px;
+  background: var(--white);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+input:focus, textarea:focus {
+  border-color: var(--ink);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--ash);
+}
+
+/* Modal Backdrop */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(13, 13, 13, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal-content {
+  background: var(--white);
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 40px;
+}
+
+/* Scroll Animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Image Fallback */
+.image-fallback {
+  background: linear-gradient(135deg, var(--raw-paper) 0%, var(--ash) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ash);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+/* Selection */
+::selection {
+  background: var(--ink);
+  color: var(--white);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--raw-paper);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ash);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink);
+}
