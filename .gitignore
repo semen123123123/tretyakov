@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+serverlog.txt
+*.log
+public/Fon-temp.jpg
