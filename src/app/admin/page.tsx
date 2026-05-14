@@ -52,7 +52,7 @@ function ProductForm({ product, onSave, onCancel }: {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onSave(form);
+    await onSave({ ...form, price: form.price === '' ? 0 : Number(form.price) });
   };
 
   return (
