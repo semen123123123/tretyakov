@@ -1,0 +1,6 @@
+<svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="#FAF7F2"/>
+  <path d="M200 160 C220 160 220 190 200 190 C180 190 180 160 200 160Z" fill="#A8A49C"/>
+  <path d="M160 250 C160 220 240 220 240 250 L240 260 L160 260Z" fill="#A8A49C"/>
+  <text x="200" y="300" text-anchor="middle" fill="#A8A49C" font-family="system-ui" font-size="14">Нет изображения</text>
+</svg>

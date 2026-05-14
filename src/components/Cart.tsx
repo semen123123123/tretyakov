@@ -5,7 +5,7 @@ import { useCart } from '@/lib/cart';
 
 export default function Cart() {
   const [isOpen, setIsOpen] = useState(false);
-  const { items, removeItem, clearCart, total, itemCount } = useCart();
+  const { items, removeItem, updateQuantity, clearCart, total, itemCount } = useCart();
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
   const handleCheckout = () => {
@@ -50,7 +50,7 @@ export default function Cart() {
                 <div className="space-y-4 max-h-64 overflow-y-auto">
                   {items.map((item) => (
                     <div key={item.id} className="flex justify-between items-start p-4 bg-[var(--raw-paper)]">
-                      <div>
+                      <div className="min-w-0 flex-1">
                         <p className="font-mono text-sm text-[var(--ink)] uppercase">
                           {item.product?.name || 'Кастомный браслет'}
                         </p>
@@ -59,15 +59,30 @@ export default function Cart() {
                             Камни: {item.stones.map(s => s.name_ru).join(', ')}
                           </p>
                         )}
-                        <p className="text-xs text-[var(--ash)]">Кол-во: {item.quantity}</p>
+                        <div className="flex items-center gap-2 mt-2">
+                          <button
+                            onClick={(e) => { e.stopPropagation(); updateQuantity(item.id, -1); }}
+                            className="text-xs text-[var(--ash)] hover:text-[var(--ink)] transition-colors"
+                          >
+                            −
+                          </button>
+                          <span className="text-xs font-mono w-4 text-center">{item.quantity}</span>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); updateQuantity(item.id, 1); }}
+                            className="text-xs text-[var(--ash)] hover:text-[var(--ink)] transition-colors"
+                          >
+                            +
+                          </button>
+                        </div>
                       </div>
-                      <div className="text-right">
+                      <div className="text-right shrink-0 ml-4">
                         <p className="font-display text-lg text-[var(--ink)]">
                           {item.basePrice} ₽
                         </p>
+                        <p className="text-[10px] text-[var(--ash)]">{item.quantity} × {item.basePrice / item.quantity} ₽</p>
                         <button
                           onClick={() => removeItem(item.id)}
-                          className="text-xs text-[var(--ash)] hover:text-[var(--ink)] mt-2"
+                          className="text-xs text-[var(--ash)] hover:text-[var(--ink)] mt-1 underline"
                         >
                           Удалить
                         </button>
@@ -126,9 +141,20 @@ function CheckoutModal({ onClose, items, total }: { onClose: () => void; items: 
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [emailError, setEmailError] = useState('');
+
+  const validateEmail = (email: string): boolean => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validateEmail(form.email)) {
+      setEmailError('Введите корректный email');
+      return;
+    }
+    setEmailError('');
     setLoading(true);
 
     try {
@@ -221,18 +247,24 @@ function CheckoutModal({ onClose, items, total }: { onClose: () => void; items: 
               className="w-full"
               placeholder="your@email.ru"
             />
+            {emailError && (
+              <p className="text-red-500 text-xs mt-1">{emailError}</p>
+            )}
           </div>
 
           <div>
             <label className="block text-xs text-[var(--ash)] uppercase tracking-wide mb-2">
-              Телефон
+              Телефон *
             </label>
             <input
               type="tel"
+              required
               value={form.phone}
               onChange={e => setForm({ ...form, phone: e.target.value })}
               className="w-full"
               placeholder="+7 (999) 000-00-00"
+              pattern="[\+\d\s\-\(\)]{7,20}"
+              title="Введите номер телефона: +7 (999) 000-00-00"
             />
           </div>
 

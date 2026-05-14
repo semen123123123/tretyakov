@@ -1,65 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { getOrders, createOrder, updateOrderStatus } from '@/lib/admin-store';
+
+export async function GET() {
+  const orders = await getOrders();
+  return NextResponse.json(orders);
+}
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    
-    const { customer_name, customer_email, customer_phone, delivery_address, total_amount, items } = body;
-
-    // Generate order number
-    const orderNumber = `TR${Date.now()}${Math.floor(Math.random() * 1000)}`;
-
-    // Insert order
-    const { data, error } = await supabase
-      .from('orders')
-      .insert({
-        order_number: orderNumber,
-        customer_name,
-        customer_email,
-        customer_phone,
-        delivery_address,
-        total_amount,
-        status: 'pending',
-        payment_status: 'pending',
-      })
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    // Insert order items
-    if (items && items.length > 0 && data) {
-      for (const item of items) {
-        await supabase.from('order_items').insert({
-          order_id: data.id,
-          product_id: item.product_id,
-          stone_ids: item.stone_ids || [],
-          quantity: item.quantity,
-          unit_price: item.unit_price,
-        });
-      }
-    }
-
-    return NextResponse.json({ success: true, order: data });
+    const order = await createOrder(body);
+    return NextResponse.json({ success: true, order });
   } catch (error) {
     console.error('Order creation error:', error);
     return NextResponse.json({ success: false, error: 'Failed to create order' }, { status: 500 });
   }
 }
 
-export async function GET() {
+export async function PATCH(request: NextRequest) {
   try {
-    const { data, error } = await supabase
-      .from('orders')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (error) throw error;
-
-    return NextResponse.json({ orders: data || [] });
-  } catch (error) {
-    console.error('Fetch orders error:', error);
-    return NextResponse.json({ error: 'Failed to fetch orders' }, { status: 500 });
+    const body = await request.json();
+    const { id, status } = body;
+    if (!id || !status) return NextResponse.json({ error: 'id and status required' }, { status: 400 });
+    const updated = await updateOrderStatus(id, status);
+    if (!updated) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+    return NextResponse.json(updated);
+  } catch (err) {
+    return NextResponse.json({ error: 'Failed to update order' }, { status: 500 });
   }
 }

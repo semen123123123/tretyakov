@@ -8,6 +8,7 @@ export type Stone = {
   additional_fact: string;
   color: string;
   image_url: string | null;
+  history_image: string | null;
   price_per_unit: number;
   sort_order: number;
 };
@@ -22,7 +23,21 @@ export type Product = {
   image_url: string | null;
   is_custom: boolean;
   is_published: boolean;
+  in_stock: boolean;
   sort_order: number;
+  // Display-only fields (local data)
+  historical_fact?: string;
+  advantages?: string[];
+  stone_details?: string;
+  size_info?: string;
+};
+
+export type OrderItem = {
+  product_id: string;
+  product_name: string;
+  stone_composition: string;
+  quantity: number;
+  unit_price: number;
 };
 
 export type Order = {
@@ -33,6 +48,7 @@ export type Order = {
   customer_email: string | null;
   delivery_address: string | null;
   total_amount: number;
+  items: OrderItem[];
   status: string;
   payment_status: string;
   payment_id: string | null;
@@ -46,6 +62,7 @@ export type Review = {
   rating: number;
   text: string;
   source: string;
+  avito_url?: string;
   is_approved: boolean;
   created_at: string;
 };

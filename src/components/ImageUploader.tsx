@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { supabase } from '@/lib/supabase';
 
 interface ImageUploaderProps {
   currentUrl?: string | null;
@@ -14,27 +13,17 @@ export default function ImageUploader({ currentUrl, onUpload }: ImageUploaderPro
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const ensureBucket = async () => {
-    const { data: buckets } = await supabase.storage.listBuckets();
-    const exists = buckets?.some(b => b.name === 'images');
-    if (!exists) {
-      await supabase.storage.createBucket('images', { public: true });
-    }
-  };
-
   const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setError(null);
 
-    // Validate file type
     if (!file.type.startsWith('image/')) {
       setError('Только изображения (JPEG, PNG, WEBP)');
       return;
     }
 
-    // Validate size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       setError('Файл слишком большой. Максимум 5MB');
       return;
@@ -43,26 +32,16 @@ export default function ImageUploader({ currentUrl, onUpload }: ImageUploaderPro
     setUploading(true);
 
     try {
-      await ensureBucket();
+      const formData = new FormData();
+      formData.append('file', file);
 
-      const ext = file.name.split('.').pop() || 'jpg';
-      const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+      const res = await fetch('/api/upload', { method: 'POST', body: formData });
+      const data = await res.json();
 
-      const { data, error: uploadError } = await supabase.storage
-        .from('images')
-        .upload(fileName, file, {
-          cacheControl: '3600',
-          upsert: false,
-        });
+      if (!res.ok) throw new Error(data.error || 'Upload failed');
 
-      if (uploadError) throw uploadError;
-
-      const { data: { publicUrl } } = supabase.storage
-        .from('images')
-        .getPublicUrl(fileName);
-
-      setPreview(publicUrl);
-      onUpload(publicUrl);
+      setPreview(data.url);
+      onUpload(data.url);
     } catch (err: any) {
       setError(err.message || 'Ошибка загрузки');
     } finally {
@@ -88,28 +67,22 @@ export default function ImageUploader({ currentUrl, onUpload }: ImageUploaderPro
           <button
             type="button"
             onClick={handleRemove}
-            className="absolute top-1 right-1 bg-[var(--ink)]/70 text-white text-xs w-5 h-5 flex items-center justify-center hover:bg-[var(--ink)]"
+            className="absolute top-1 right-1 bg-[var(--ink)] text-white text-xs w-5 h-5 flex items-center justify-center"
           >
-            &times;
+            ×
           </button>
         </div>
       )}
 
-      <div className="flex items-center gap-3">
+      <div className="flex gap-2">
         <input
           ref={inputRef}
           type="file"
-          accept="image/*"
+          accept="image/jpeg,image/png,image/webp"
           onChange={handleFile}
-          className="hidden"
-          id="file-upload"
+          className="text-sm text-[var(--ash)] file:mr-3 file:py-1 file:px-3 file:border file:border-[var(--ink)] file:text-xs file:bg-[var(--white)] file:text-[var(--ink)]"
         />
-        <label
-          htmlFor="file-upload"
-          className={`inline-block px-4 py-2 text-xs font-mono uppercase tracking-wide cursor-pointer border border-[var(--ink)] hover:bg-[var(--raw-paper)] transition-colors ${uploading ? 'opacity-50 pointer-events-none' : ''}`}
-        >
-          {uploading ? 'Загрузка...' : 'Выбрать файл'}
-        </label>
+        {uploading && <span className="text-xs text-[var(--ash)]">Загрузка...</span>}
       </div>
 
       {error && <p className="text-xs text-red-500">{error}</p>}

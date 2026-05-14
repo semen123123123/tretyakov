@@ -21,7 +21,7 @@ function StarRating({ rating }: { rating: number }) {
 
 export default function ReviewsClient({ reviews }: { reviews: Review[] }) {
   return (
-    <section id="reviews" className="py-24 px-6 bg-[var(--white)]">
+    <section id="reviews" className="py-24 px-6 bg-[var(--raw-paper)]">
       <div className="max-w-6xl mx-auto">
         <div className="divider-thick mb-12" />
         
@@ -32,7 +32,7 @@ export default function ReviewsClient({ reviews }: { reviews: Review[] }) {
         
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {reviews.map((review) => (
-            <div key={review.id} className="card p-6">
+            <div key={review.id} className="card p-6 bg-[var(--white)] flex flex-col">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 bg-[var(--ink)] text-[var(--white)] flex items-center justify-center font-mono text-sm">
                   {review.author_name.charAt(0)}
@@ -45,14 +45,19 @@ export default function ReviewsClient({ reviews }: { reviews: Review[] }) {
                 </div>
               </div>
               
-              <p className="text-sm text-[var(--ash)] leading-relaxed">
+              <p className="text-sm text-[var(--ash)] leading-relaxed flex-1">
                 {review.text}
               </p>
               
-              {review.source && (
-                <p className="system-label mt-4 text-[var(--ash)]">
-                  {review.source.toUpperCase()}
-                </p>
+              {review.avito_url && (
+                <a
+                  href={review.avito_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 mt-4 text-xs font-mono tracking-wider uppercase text-[var(--ink)] border border-[var(--ink)] px-3 py-1.5 w-fit hover:bg-[var(--ink)] hover:text-[var(--white)] transition-colors"
+                >
+                  Перейти на авито
+                </a>
               )}
             </div>
           ))}

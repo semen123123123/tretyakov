@@ -3,10 +3,13 @@ import History from '@/components/History';
 import StonesServer from '@/components/StonesServer';
 import ConstructorServer from '@/components/ConstructorServer';
 import CatalogServer from '@/components/CatalogServer';
+import BraceletSlider from '@/components/BraceletSlider';
 import ReviewsServer from '@/components/ReviewsServer';
 import Footer from '@/components/Footer';
 import Cart from '@/components/Cart';
 import { Suspense } from 'react';
+
+export const dynamic = 'force-dynamic';
 
 export default function Home() {
   return (
@@ -23,6 +26,8 @@ export default function Home() {
       <Suspense fallback={<div className="py-24 text-center text-[var(--ash)]">Загрузка...</div>}>
         <CatalogServer />
       </Suspense>
+      
+      <BraceletSlider />
       
       <Suspense fallback={<div className="py-24 text-center text-[var(--ash)]">Загрузка...</div>}>
         <ReviewsServer />
