@@ -33,7 +33,9 @@ export async function POST(request: NextRequest) {
       .from('uploads')
       .getPublicUrl(fileName);
 
-    return NextResponse.json({ url: publicUrl });
+    // Use proxy to avoid QUIC protocol errors with Supabase CDN
+    const proxyUrl = `/api/image-proxy?url=${encodeURIComponent(publicUrl)}`;
+    return NextResponse.json({ url: proxyUrl });
   } catch (err) {
     console.error('Upload error:', err);
     return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
