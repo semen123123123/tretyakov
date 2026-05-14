@@ -43,11 +43,11 @@ function ProductForm({ product, onSave, onCancel }: {
     slug: product?.slug || '',
     description: product?.description || '',
     stone_composition: product?.stone_composition || '',
-    price: product?.price || 0,
+    price: product?.price ?? '',
     image_url: product?.image_url || '',
     is_published: product?.is_published ?? true,
     in_stock: product?.in_stock ?? true,
-    sort_order: product?.sort_order || 0,
+    sort_order: product?.sort_order ?? 0,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -78,7 +78,7 @@ function ProductForm({ product, onSave, onCancel }: {
         </div>
         <div>
           <label className="block text-xs font-mono uppercase tracking-wide text-[var(--ash)] mb-1">Цена (₽)</label>
-          <input type="number" value={form.price} onChange={e => setForm({ ...form, price: Number(e.target.value) })} className="w-full p-2 border border-[var(--ash)] text-sm" required />
+          <input type="number" value={form.price === '' ? '' : form.price} onChange={e => setForm({ ...form, price: e.target.value === '' ? '' : Number(e.target.value) })} className="w-full p-2 border border-[var(--ash)] text-sm" required />
         </div>
       </div>
       <div>
