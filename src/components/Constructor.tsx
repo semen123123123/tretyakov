@@ -323,6 +323,45 @@ export default function Constructor({ stones }: ConstructorProps) {
               </p>
             </div>
 
+            {/* Bracelet preview in modal */}
+            <div className="mb-6 bg-[var(--white)] border border-[var(--ink)] p-6">
+              <div className="relative mx-auto w-full max-w-[200px] aspect-square">
+                <svg className="absolute inset-0 w-full h-full" viewBox="0 0 300 300" fill="none">
+                  <circle cx="150" cy="150" r="120" stroke="#E0DCD4" strokeWidth="6" opacity="0.4" />
+                  <circle cx="150" cy="150" r="120" stroke="#FFFFFF" strokeWidth="4" />
+                </svg>
+                {selectedStones.map((stone, i) => {
+                  const total = selectedStones.length;
+                  const angle = (i / total) * Math.PI * 2 - Math.PI / 2;
+                  const radius = 40;
+                  const left = 50 + radius * Math.cos(angle);
+                  const top = 50 + radius * Math.sin(angle);
+                  return (
+                    <div
+                      key={`${stone.id}-${i}`}
+                      className="absolute"
+                      style={{
+                        left: `${left}%`,
+                        top: `${top}%`,
+                        transform: 'translate(-50%, -50%)',
+                      }}
+                    >
+                      <div
+                        className={`w-9 h-9 ${stone.name_ru === 'Гематит' ? '' : 'rounded-full'} overflow-hidden shadow-md border border-[var(--white)]`}
+                        style={stone.name_ru === 'Гематит' ? { clipPath: 'polygon(25% 0%, 75% 0%, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0% 75%, 0% 25%)' } : undefined}
+                      >
+                        <img
+                          src={stoneImageUrl(stone)}
+                          alt={stone.name_ru}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
             {/* Selected stones list */}
             <div className="mb-6">
               <p className="system-label mb-3">ВЫБРАННЫЕ КАМНИ</p>
