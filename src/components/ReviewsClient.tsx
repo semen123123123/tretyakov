@@ -36,14 +36,10 @@ export default function ReviewsClient({ reviews }: { reviews: Review[] }) {
         </p>
 
         {/* Masonry columns */}
-        <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
           {reviews.map((review) => (
-            <div
-              key={review.id}
-              className="break-inside-avoid"
-            >
-              <div className="bg-[var(--white)] border-l-2 border-[var(--ink)] p-6 relative transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-                {/* Decorative quote */}
+            <div key={review.id} className="flex">
+              <div className="bg-[var(--white)] border-l-2 border-[var(--ink)] p-6 relative flex flex-col w-full transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">                {/* Decorative quote */}
                 <div className="text-6xl font-display text-[var(--ink)]/5 leading-none mb-2 select-none">
                   &ldquo;
                 </div>
@@ -60,7 +56,7 @@ export default function ReviewsClient({ reviews }: { reviews: Review[] }) {
                   </a>
                 )}
                 
-                <p className="text-sm text-[var(--ink)] leading-relaxed mb-5">
+                <p className="text-sm text-[var(--ink)] leading-relaxed mb-5 flex-1">
                   {review.text}
                 </p>
                 
