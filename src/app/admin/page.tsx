@@ -47,12 +47,16 @@ function ProductForm({ product, onSave, onCancel }: {
     image_url: product?.image_url || '',
     is_published: product?.is_published ?? true,
     in_stock: product?.in_stock ?? true,
-    sort_order: product?.sort_order ?? 0,
+    sort_order: product?.sort_order ?? '',
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onSave({ ...form, price: form.price === '' ? 0 : Number(form.price) });
+    await onSave({
+      ...form,
+      price: form.price === '' ? 0 : Number(form.price),
+      sort_order: form.sort_order === '' ? 0 : Number(form.sort_order),
+    });
   };
 
   return (
@@ -87,7 +91,7 @@ function ProductForm({ product, onSave, onCancel }: {
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="block text-xs font-mono uppercase tracking-wide text-[var(--ash)] mb-1">Порядок сортировки</label>
-          <input type="number" value={form.sort_order} onChange={e => setForm({ ...form, sort_order: Number(e.target.value) })} className="w-full p-2 border border-[var(--ash)] text-sm" />
+          <input type="number" value={form.sort_order === '' ? '' : form.sort_order} onChange={e => setForm({ ...form, sort_order: e.target.value === '' ? '' : Number(e.target.value) })} className="w-full p-2 border border-[var(--ash)] text-sm" />
         </div>
       </div>
       <div className="flex items-center gap-2">
@@ -122,12 +126,23 @@ function StoneForm({ stone, onSave, onCancel }: {
     image_url: stone?.image_url || '',
     history_image: stone?.history_image || '',
     price_per_unit: stone?.price_per_unit || 0,
-    sort_order: stone?.sort_order || 0,
+    sort_order: stone?.sort_order ?? '',
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onSave(form);
+    await onSave({
+      ...form,
+      sort_order: form.sort_order === '' ? 0 : Number(form.sort_order),
+    });
+  };
+
+  const handleImageUpload = (url: string) => {
+    setForm(prev => ({ ...prev, image_url: url }));
+  };
+
+  const handleHistoryImageUpload = (url: string) => {
+    setForm(prev => ({ ...prev, history_image: url }));
   };
 
   return (
@@ -167,7 +182,7 @@ function StoneForm({ stone, onSave, onCancel }: {
         </div>
         <div>
           <label className="block text-xs font-mono uppercase tracking-wide text-[var(--ash)] mb-1">Порядок сортировки</label>
-          <input type="number" value={form.sort_order} onChange={e => setForm({ ...form, sort_order: Number(e.target.value) })} className="w-full p-2 border border-[var(--ash)] text-sm" />
+          <input type="number" value={form.sort_order === '' ? '' : form.sort_order} onChange={e => setForm({ ...form, sort_order: e.target.value === '' ? '' : Number(e.target.value) })} className="w-full p-2 border border-[var(--ash)] text-sm" />
         </div>
       </div>
       <div>
