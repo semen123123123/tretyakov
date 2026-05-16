@@ -538,7 +538,7 @@ export default function AdminPage() {
             <table className="w-full min-w-[700px]">
               <thead>
                 <tr className="border-b border-[var(--ink)]">
-                  {['№', 'Клиент / Состав', 'Сумма', 'Статус', 'Оплата', 'Дата', 'Действия'].map(h => (
+                  {['№', 'Клиент', 'Телефон', 'Состав', 'Сумма', 'Статус', 'Оплата', 'Адрес', 'Дата', 'Действия'].map(h => (
                     <th key={h} className="text-left p-4 font-mono text-xs uppercase text-[var(--ash)]">{h}</th>
                   ))}
                 </tr>
@@ -546,34 +546,44 @@ export default function AdminPage() {
               <tbody>
                 {orders.map(order => (
                   <tr key={order.id} className="border-b border-[var(--ash)]">
-                    <td className="p-4 font-mono text-sm">{order.order_number}</td>
+                    <td className="p-4 font-mono text-sm whitespace-nowrap">{order.order_number}</td>
                     <td className="p-4">
                       <p className="text-sm">{order.customer_name}</p>
                       <p className="text-xs text-[var(--ash)]">{order.customer_email}</p>
-                      {order.items && order.items.length > 0 && (
-                        <div className="mt-2 text-[10px] text-[var(--ash)] border-t border-dashed border-[var(--ash)]/30 pt-1">
+                    </td>
+                    <td className="p-4 font-mono text-xs whitespace-nowrap">
+                      {order.customer_phone || <span className="text-[var(--ash)]">—</span>}
+                    </td>
+                    <td className="p-4">
+                      {order.items && order.items.length > 0 ? (
+                        <div className="text-[10px] text-[var(--ash)] space-y-0.5">
                           {order.items.map((item: OrderItem, i: number) => (
-                            <div key={i} className="truncate max-w-[200px]">
+                            <div key={i} className="truncate max-w-[160px]">
                               {item.product_name} × {item.quantity}
                             </div>
                           ))}
                         </div>
+                      ) : (
+                        <span className="text-[10px] text-[var(--ash)]">—</span>
                       )}
                     </td>
-                    <td className="p-4 font-display">{order.total_amount} ₽</td>
+                    <td className="p-4 font-display whitespace-nowrap">{order.total_amount} ₽</td>
                     <td className="p-4">
-                      <span className={`text-xs px-2 py-1 ${
+                      <span className={`text-xs px-2 py-1 whitespace-nowrap ${
                         order.status === 'pending' ? 'bg-yellow-100' :
                         order.status === 'processing' ? 'bg-blue-100' :
                         order.status === 'completed' ? 'bg-green-100' : 'bg-red-100'
                       }`}>{statusLabel(order.status)}</span>
                     </td>
                     <td className="p-4">
-                      <span className={`text-xs px-2 py-1 ${
+                      <span className={`text-xs px-2 py-1 whitespace-nowrap ${
                         order.payment_status === 'paid' ? 'bg-green-100' : 'bg-yellow-100'
                       }`}>{paymentLabel(order.payment_status)}</span>
                     </td>
-                    <td className="p-4 text-sm text-[var(--ash)]">
+                    <td className="p-4 text-xs max-w-[200px]">
+                      {order.delivery_address || <span className="text-[var(--ash)]">—</span>}
+                    </td>
+                    <td className="p-4 text-sm text-[var(--ash)] whitespace-nowrap">
                       {new Date(order.created_at).toLocaleDateString('ru-RU')}
                     </td>
                     <td className="p-4">
@@ -590,7 +600,7 @@ export default function AdminPage() {
                   </tr>
                 ))}
                 {orders.length === 0 && (
-                  <tr><td colSpan={7} className="p-8 text-center text-[var(--ash)]">Нет заказов</td></tr>
+                  <tr><td colSpan={10} className="p-8 text-center text-[var(--ash)]">Нет заказов</td></tr>
                 )}
               </tbody>
             </table>

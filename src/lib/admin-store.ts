@@ -215,7 +215,12 @@ export async function getOrders(): Promise<Order[]> {
 export async function createOrder(data: Partial<Order> & { items?: OrderItem[] }): Promise<Order> {
   await ensureSeeded();
   const now = new Date().toISOString();
-  const orderNumber = `TR${Date.now()}${Math.floor(Math.random() * 1000)}`;
+
+  // Sequential order number
+  const { count, error: countError } = await supabase
+    .from('orders')
+    .select('*', { count: 'exact', head: true });
+  const orderNumber = `№${(count || 0) + 1}`;
 
   // Insert order
   const { data: order, error: orderError } = await supabase
