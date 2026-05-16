@@ -4,11 +4,11 @@ import { Review } from '@/lib/types';
 
 function StarRating({ rating }: { rating: number }) {
   return (
-    <div className="flex gap-1">
+    <div className="flex gap-0.5">
       {[1, 2, 3, 4, 5].map((star) => (
         <svg 
           key={star}
-          className={`w-4 h-4 ${star <= rating ? 'text-[var(--ink)]' : 'text-[var(--ash)]'}`}
+          className={`w-3.5 h-3.5 ${star <= rating ? 'text-amber-600' : 'text-[var(--ash)]/40'}`}
           fill="currentColor"
           viewBox="0 0 20 20"
         >
@@ -21,8 +21,6 @@ function StarRating({ rating }: { rating: number }) {
 
 export default function ReviewsClient({ reviews }: { reviews: Review[] }) {
   if (reviews.length === 0) return null;
-
-  const [featured, ...rest] = reviews;
 
   return (
     <section id="reviews" className="py-24 px-6 bg-[var(--raw-paper)]">
@@ -37,90 +35,52 @@ export default function ReviewsClient({ reviews }: { reviews: Review[] }) {
           {reviews.length} отзыв{reviews.length === 1 ? '' : reviews.length < 5 ? 'а' : 'ов'}
         </p>
 
-        {/* === Featured Review === */}
-        <div className="max-w-3xl mx-auto mb-20">
-          <div className="bg-[var(--white)] p-8 md:p-10 text-left border-l-2 border-[var(--ink)] flex flex-col min-h-[280px] md:min-h-[320px]">
-            <p className="font-display text-xl md:text-2xl text-[var(--ink)] leading-relaxed mb-8">
-              {featured.text}
-            </p>
-            <div className="flex items-center gap-4">
-              <div className="w-11 h-11 rounded-full bg-[var(--ink)] text-[var(--white)] flex items-center justify-center font-mono text-sm flex-shrink-0">
-                {featured.author_name.charAt(0)}
-              </div>
-              <div>
-                <p className="font-mono text-sm font-semibold text-[var(--ink)]">
-                  {featured.author_name}
+        {/* Masonry columns */}
+        <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+          {reviews.map((review) => (
+            <div
+              key={review.id}
+              className="break-inside-avoid"
+            >
+              <div className="bg-[var(--white)] border-l-2 border-[var(--ink)] p-6 relative transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                {/* Decorative quote */}
+                <div className="text-6xl font-display text-[var(--ink)]/5 leading-none mb-2 select-none">
+                  &ldquo;
+                </div>
+                
+                {/* Avito badge */}
+                {review.avito_url && (
+                  <a
+                    href={review.avito_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="absolute top-4 right-4 text-[9px] font-mono tracking-widest uppercase text-[var(--ash)] hover:text-[var(--ink)] transition-colors"
+                  >
+                    Avito ↗
+                  </a>
+                )}
+                
+                <p className="text-sm text-[var(--ink)] leading-relaxed mb-5">
+                  {review.text}
                 </p>
-                <StarRating rating={featured.rating} />
-              </div>
-            </div>
-            {featured.avito_url && (
-              <a
-                href={featured.avito_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 mt-auto pt-6 text-xs font-mono tracking-widest uppercase text-[var(--ash)] hover:text-[var(--ink)] transition-colors w-fit"
-              >
-                Avito ↗
-              </a>
-            )}
-          </div>
-        </div>
-
-        {/* === Remaining Reviews === */}
-        {rest.length > 0 && (
-          <div className="relative">
-            {/* Mobile scroll hint */}
-            <div className="flex items-center justify-between mb-5 md:mb-8">
-              <p className="system-label text-xs">ЕЩЁ ОТЗЫВЫ</p>
-              <span className="md:hidden text-[10px] font-mono text-[var(--ash)] tracking-widest uppercase flex items-center gap-1">
-                Листайте
-                <svg className="w-3 h-3" fill="none" viewBox="0 0 12 12" stroke="currentColor" strokeWidth="2">
-                  <path d="M4 2l4 4-4 4" />
-                </svg>
-              </span>
-            </div>
-            
-            <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 overflow-x-auto snap-x snap-mandatory pb-2 md:overflow-visible md:snap-none scrollbar-none">
-              {rest.map((review) => (
-                <div
-                  key={review.id}
-                  className="min-w-[280px] md:min-w-0 snap-start"
-                >
-                  <div className="bg-[var(--white)] p-6 border-l-2 border-[var(--ink)] h-full flex flex-col">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-8 h-8 rounded-full bg-[var(--ink)] text-[var(--white)] flex items-center justify-center font-mono text-xs flex-shrink-0">
-                        {review.author_name.charAt(0)}
-                      </div>
-                      <div className="min-w-0">
-                        <p className="font-mono text-sm font-semibold text-[var(--ink)] truncate">
-                          {review.author_name}
-                        </p>
-                        <StarRating rating={review.rating} />
-                      </div>
-                    </div>
-                    
-                    <p className="text-sm text-[var(--ink)] leading-relaxed flex-1">
-                      {review.text}
+                
+                {/* Author row */}
+                <div className="flex items-center gap-3 pt-4 border-t border-[var(--ink)]/10">
+                  <div className="w-8 h-8 rounded-full bg-[var(--ink)] text-[var(--white)] flex items-center justify-center font-mono text-xs flex-shrink-0">
+                    {review.author_name.charAt(0)}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-mono text-xs font-semibold text-[var(--ink)] truncate">
+                      {review.author_name}
                     </p>
-                    
-                    {review.avito_url && (
-                      <a
-                        href={review.avito_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 mt-4 text-[10px] font-mono tracking-widest uppercase text-[var(--ash)] hover:text-[var(--ink)] transition-colors w-fit"
-                      >
-                        Avito ↗
-                      </a>
-                    )}
+                    <StarRating rating={review.rating} />
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
-          </div>
-        )}
-
+          ))}
+        </div>
+        
         <div className="divider-thick mt-20" />
       </div>
     </section>
