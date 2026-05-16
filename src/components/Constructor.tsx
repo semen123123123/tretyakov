@@ -145,7 +145,7 @@ export default function Constructor({ stones }: ConstructorProps) {
                   <button
                     key={`${stone.id}-${i}`}
                     onClick={() => removeBead(i)}
-                    className="group absolute transition-transform hover:scale-125"
+                    className="group absolute transition-all duration-300 ease-in-out hover:scale-125"
                     style={{
                       left: `${left}%`,
                       top: `${top}%`,
