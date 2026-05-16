@@ -69,7 +69,7 @@ export default function Footer() {
                   </svg>
                 </a>
                 <a href="https://www.avito.ru/brands/73ec706323e74f732822382049cd02e0/all?sellerId=0b0c8ecd0e1307d79be53fc305f2abb0" target="_blank" rel="noopener noreferrer" className="text-[var(--white)] hover:text-[var(--ash)] transition-colors font-mono tracking-widest text-xs" title="Avito">
-                  AVITO ↗
+                  AVITO
                 </a>
               </li>
             </ul>
