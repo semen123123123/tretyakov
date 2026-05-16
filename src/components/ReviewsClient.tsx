@@ -38,28 +38,27 @@ export default function ReviewsClient({ reviews }: { reviews: Review[] }) {
         </p>
 
         {/* === Featured Review === */}
-        <div className="max-w-3xl mx-auto text-center mb-20">
-          <div className="text-7xl md:text-9xl font-display text-[var(--ink)]/10 leading-none mb-2 select-none">
-            &ldquo;
-          </div>
-          <p className="font-display text-xl md:text-2xl text-[var(--ink)] leading-relaxed mb-8">
-            {featured.text}
-          </p>
-          <div className="flex items-center justify-center gap-4">
-            <div className="w-11 h-11 rounded-full bg-[var(--ink)] text-[var(--white)] flex items-center justify-center font-mono text-sm flex-shrink-0">
-              {featured.author_name.charAt(0)}
-            </div>
-            <div className="text-left">
-              <p className="font-mono text-sm font-semibold text-[var(--ink)]">
-                {featured.author_name}
-              </p>
-              <div className="flex items-center gap-2 mt-0.5">
-                <StarRating rating={featured.rating} />
-                {featured.avito_url && (
-                  <span className="text-[10px] font-mono text-[var(--ash)] ml-1">
-                    &middot; Avito
-                  </span>
-                )}
+        <div className="max-w-3xl mx-auto mb-20">
+          <div className="bg-[var(--white)] p-8 md:p-10 text-center border border-[var(--ink)]">
+            <p className="font-display text-xl md:text-2xl text-[var(--ink)] leading-relaxed mb-8">
+              {featured.text}
+            </p>
+            <div className="flex items-center justify-center gap-4">
+              <div className="w-11 h-11 rounded-full bg-[var(--ink)] text-[var(--white)] flex items-center justify-center font-mono text-sm flex-shrink-0">
+                {featured.author_name.charAt(0)}
+              </div>
+              <div className="text-left">
+                <p className="font-mono text-sm font-semibold text-[var(--ink)]">
+                  {featured.author_name}
+                </p>
+                <div className="flex items-center gap-2 mt-0.5">
+                  <StarRating rating={featured.rating} />
+                  {featured.avito_url && (
+                    <span className="text-[10px] font-mono text-[var(--ash)] ml-1">
+                      &middot; Avito
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
           </div>
