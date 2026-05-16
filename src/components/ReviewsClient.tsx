@@ -36,7 +36,7 @@ export default function ReviewsClient({ reviews }: { reviews: Review[] }) {
         </p>
 
         {/* Masonry columns */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {reviews.map((review) => (
             <div key={review.id} className="flex">
               <div className="bg-[var(--white)] border-l-2 border-[var(--ink)] p-6 relative flex flex-col w-full transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">                {/* Decorative quote */}
