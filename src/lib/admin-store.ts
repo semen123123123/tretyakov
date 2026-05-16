@@ -274,6 +274,12 @@ export async function updateOrderStatus(id: string, status: string): Promise<Ord
   return mapOrder(updated);
 }
 
+export async function deleteOrder(id: string): Promise<boolean> {
+  const { error } = await supabase.from('orders').delete().eq('id', id);
+  if (error) throw new Error('Failed to delete order: ' + error.message);
+  return true;
+}
+
 // ─── Reviews ─────────────────────────────────────────────────
 
 export async function getReviews(): Promise<Review[]> {

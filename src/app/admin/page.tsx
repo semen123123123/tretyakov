@@ -269,7 +269,7 @@ export default function AdminPage() {
 
   // Modal state
   const [modal, setModal] = useState<{ type: 'product' | 'stone' | 'review'; edit?: Product | Stone | Review | null } | null>(null);
-  const [deleteTarget, setDeleteTarget] = useState<{ type: 'product' | 'stone'; id: string; name: string } | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<{ type: 'product' | 'stone' | 'order'; id: string; name: string } | null>(null);
 
   // ─── Status helpers ────────────────────────────────────────────
   const statusLabel = (s: string) =>
@@ -453,6 +453,16 @@ export default function AdminPage() {
     }
   };
 
+  const deleteOrder = async (id: string) => {
+    try {
+      await api('/api/orders?id=' + id, { method: 'DELETE' });
+      setDeleteTarget(null);
+      fetchData();
+    } catch (err: any) {
+      alert('Ошибка: ' + err.message);
+    }
+  };
+
   const togglePublished = async (productId: string, current: boolean) => {
     try {
       await api('/api/products', {
@@ -556,10 +566,17 @@ export default function AdminPage() {
                     </td>
                     <td className="p-4">
                       {order.items && order.items.length > 0 ? (
-                        <div className="text-[10px] text-[var(--ash)] space-y-0.5">
+                        <div className="text-[10px] text-[var(--ash)] space-y-1.5">
                           {order.items.map((item: OrderItem, i: number) => (
-                            <div key={i} className="truncate max-w-[160px]">
-                              {item.product_name} × {item.quantity}
+                            <div key={i}>
+                              <div className="font-semibold text-[var(--ink)] truncate max-w-[160px]">
+                                {item.product_name} × {item.quantity}
+                              </div>
+                              {item.stone_composition && (
+                                <div className="truncate max-w-[160px] text-[var(--ash)]">
+                                  {item.stone_composition}
+                                </div>
+                              )}
                             </div>
                           ))}
                         </div>
@@ -596,6 +613,13 @@ export default function AdminPage() {
                           <option key={s} value={s}>{statusLabel(s)}</option>
                         ))}
                       </select>
+                      <button
+                        onClick={() => setDeleteTarget({ type: 'order', id: order.id, name: order.order_number })}
+                        className="text-[10px] text-red-400 hover:text-red-600 underline ml-2 align-middle"
+                        title="Удалить заказ"
+                      >
+                        удалить
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -808,7 +832,7 @@ export default function AdminPage() {
             <div className="flex gap-3 justify-end">
               <button onClick={() => setDeleteTarget(null)} className="btn-secondary text-sm">Отмена</button>
               <button
-                onClick={() => deleteTarget.type === 'product' ? deleteProduct(deleteTarget.id) : deleteStone(deleteTarget.id)}
+                onClick={() => deleteTarget.type === 'product' ? deleteProduct(deleteTarget.id) : deleteTarget.type === 'stone' ? deleteStone(deleteTarget.id) : deleteOrder(deleteTarget.id)}
                 className="bg-red-600 text-white text-sm px-4 py-2 hover:bg-red-700"
               >
                 Удалить

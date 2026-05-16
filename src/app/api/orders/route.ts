@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getOrders, createOrder, updateOrderStatus } from '@/lib/admin-store';
+import { getOrders, createOrder, updateOrderStatus, deleteOrder } from '@/lib/admin-store';
 
 export async function GET() {
   const orders = await getOrders();
@@ -27,5 +27,17 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json(updated);
   } catch (err) {
     return NextResponse.json({ error: 'Failed to update order' }, { status: 500 });
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    if (!id) return NextResponse.json({ error: 'id required' }, { status: 400 });
+    await deleteOrder(id);
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    return NextResponse.json({ error: 'Failed to delete order' }, { status: 500 });
   }
 }
