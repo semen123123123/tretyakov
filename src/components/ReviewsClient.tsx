@@ -39,33 +39,31 @@ export default function ReviewsClient({ reviews }: { reviews: Review[] }) {
 
         {/* === Featured Review === */}
         <div className="max-w-3xl mx-auto mb-20">
-          <div className="bg-[var(--white)] p-8 md:p-10 text-center border-l-2 border-[var(--ink)]">
+          <div className="bg-[var(--white)] p-8 md:p-10 text-left border-l-2 border-[var(--ink)] flex flex-col min-h-[280px] md:min-h-[320px]">
             <p className="font-display text-xl md:text-2xl text-[var(--ink)] leading-relaxed mb-8">
               {featured.text}
             </p>
-            <div className="flex items-center justify-center gap-4">
+            <div className="flex items-center gap-4">
               <div className="w-11 h-11 rounded-full bg-[var(--ink)] text-[var(--white)] flex items-center justify-center font-mono text-sm flex-shrink-0">
                 {featured.author_name.charAt(0)}
               </div>
-              <div className="text-left">
+              <div>
                 <p className="font-mono text-sm font-semibold text-[var(--ink)]">
                   {featured.author_name}
                 </p>
-                <div className="flex items-center gap-2 mt-0.5">
-                  <StarRating rating={featured.rating} />
-                  {featured.avito_url && (
-                    <a
-                      href={featured.avito_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[10px] font-mono text-[var(--ash)] hover:text-[var(--ink)] transition-colors ml-1"
-                    >
-                      &middot; Avito ↗
-                    </a>
-                  )}
-                </div>
+                <StarRating rating={featured.rating} />
               </div>
             </div>
+            {featured.avito_url && (
+              <a
+                href={featured.avito_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 mt-auto pt-6 text-xs font-mono tracking-widest uppercase text-[var(--ash)] hover:text-[var(--ink)] transition-colors w-fit"
+              >
+                Avito ↗
+              </a>
+            )}
           </div>
         </div>
 
