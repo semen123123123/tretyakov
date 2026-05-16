@@ -271,6 +271,12 @@ export default function AdminPage() {
   const [modal, setModal] = useState<{ type: 'product' | 'stone' | 'review'; edit?: Product | Stone | Review | null } | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<{ type: 'product' | 'stone'; id: string; name: string } | null>(null);
 
+  // ─── Status helpers ────────────────────────────────────────────
+  const statusLabel = (s: string) =>
+    ({ pending: 'Ожидает', processing: 'В обработке', completed: 'Выполнен', cancelled: 'Отменён' })[s] || s;
+  const paymentLabel = (s: string) =>
+    ({ pending: 'Не оплачен', paid: 'Оплачен' })[s] || s;
+
   // Check existing session on mount
   useEffect(() => {
     (async () => {
@@ -560,12 +566,12 @@ export default function AdminPage() {
                         order.status === 'pending' ? 'bg-yellow-100' :
                         order.status === 'processing' ? 'bg-blue-100' :
                         order.status === 'completed' ? 'bg-green-100' : 'bg-red-100'
-                      }`}>{order.status}</span>
+                      }`}>{statusLabel(order.status)}</span>
                     </td>
                     <td className="p-4">
                       <span className={`text-xs px-2 py-1 ${
                         order.payment_status === 'paid' ? 'bg-green-100' : 'bg-yellow-100'
-                      }`}>{order.payment_status}</span>
+                      }`}>{paymentLabel(order.payment_status)}</span>
                     </td>
                     <td className="p-4 text-sm text-[var(--ash)]">
                       {new Date(order.created_at).toLocaleDateString('ru-RU')}
@@ -577,7 +583,7 @@ export default function AdminPage() {
                         className="text-xs p-1 border border-[var(--ash)]"
                       >
                         {['pending', 'processing', 'completed', 'cancelled'].map(s => (
-                          <option key={s} value={s}>{s}</option>
+                          <option key={s} value={s}>{statusLabel(s)}</option>
                         ))}
                       </select>
                     </td>
