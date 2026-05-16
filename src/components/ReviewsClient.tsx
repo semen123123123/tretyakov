@@ -98,8 +98,8 @@ export default function ReviewsClient({ reviews }: { reviews: Review[] }) {
                       </div>
                     </div>
                     
-                    <p className="text-sm text-[var(--ash)] leading-relaxed flex-1">
-                      &laquo;{review.text}&raquo;
+                    <p className="text-sm text-[var(--ink)] leading-relaxed flex-1">
+                      {review.text}
                     </p>
                     
                     {review.avito_url && (
