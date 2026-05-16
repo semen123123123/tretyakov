@@ -200,11 +200,11 @@ export default function Constructor({ stones }: ConstructorProps) {
         </div>
 
         {/* === Controls === */}
-        <div className="flex items-center justify-center gap-4 mb-10">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-10 w-full max-w-sm sm:max-w-none mx-auto">
           <button
             onClick={removeLastStone}
             disabled={selectedStones.length === 0}
-            className={`btn-secondary text-xs px-4 py-2 ${
+            className={`btn-secondary text-xs px-4 py-2 w-full sm:w-auto ${
               selectedStones.length === 0 ? 'opacity-30 cursor-not-allowed' : ''
             }`}
           >
@@ -214,7 +214,7 @@ export default function Constructor({ stones }: ConstructorProps) {
           <button
             onClick={handleSubmit}
             disabled={selectedStones.length < MIN_STONES}
-            className={`btn-primary text-xs px-6 py-2 ${
+            className={`btn-primary text-xs px-6 py-2 w-full sm:w-auto ${
               selectedStones.length < MIN_STONES ? 'opacity-30 cursor-not-allowed' : ''
             }`}
           >
@@ -224,7 +224,7 @@ export default function Constructor({ stones }: ConstructorProps) {
           <button
             onClick={() => setSelectedStones([])}
             disabled={selectedStones.length === 0}
-            className={`btn-secondary text-xs px-4 py-2 ${
+            className={`btn-secondary text-xs px-4 py-2 w-full sm:w-auto ${
               selectedStones.length === 0 ? 'opacity-30 cursor-not-allowed' : ''
             }`}
           >
