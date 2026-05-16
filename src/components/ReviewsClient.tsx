@@ -39,7 +39,7 @@ export default function ReviewsClient({ reviews }: { reviews: Review[] }) {
 
         {/* === Featured Review === */}
         <div className="max-w-3xl mx-auto mb-20">
-          <div className="bg-[var(--white)] p-8 md:p-10 text-center border border-[var(--ink)]">
+          <div className="bg-[var(--white)] p-8 md:p-10 text-center border-r-2 border-[var(--ink)]">
             <p className="font-display text-xl md:text-2xl text-[var(--ink)] leading-relaxed mb-8">
               {featured.text}
             </p>
@@ -54,9 +54,14 @@ export default function ReviewsClient({ reviews }: { reviews: Review[] }) {
                 <div className="flex items-center gap-2 mt-0.5">
                   <StarRating rating={featured.rating} />
                   {featured.avito_url && (
-                    <span className="text-[10px] font-mono text-[var(--ash)] ml-1">
-                      &middot; Avito
-                    </span>
+                    <a
+                      href={featured.avito_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[10px] font-mono text-[var(--ash)] hover:text-[var(--ink)] transition-colors ml-1"
+                    >
+                      &middot; Avito ↗
+                    </a>
                   )}
                 </div>
               </div>
