@@ -119,20 +119,21 @@ export default function Constructor({ stones }: ConstructorProps) {
           ref={braceletRef}
           className="mb-12 p-6 bg-[var(--white)] border border-[var(--ink)] min-h-[280px] md:min-h-[320px] relative overflow-hidden"
         >
-          {/* Circular bracelet SVG */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <svg className="w-full h-full max-w-[260px] max-h-[260px] md:max-w-[300px] md:max-h-[300px]" viewBox="0 0 300 300" fill="none">
-              {/* Тень шнура (для объёма) */}
-              <circle cx="150" cy="150" r="120" stroke="#E0DCD4" strokeWidth="6" opacity="0.4" />
-              {/* Основной белый шнур */}
-              <circle cx="150" cy="150" r="120" stroke="#FFFFFF" strokeWidth="4" />
-            </svg>
-          </div>
+          {/* Centered wrapper for both SVG and stones */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="relative w-full max-w-[260px] md:max-w-[300px] aspect-square">
+              {/* Circular bracelet SVG */}
+              <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 300 300" fill="none">
+                {/* Тень шнура (для объёма) */}
+                <circle cx="150" cy="150" r="120" stroke="#E0DCD4" strokeWidth="6" opacity="0.4" />
+                {/* Основной белый шнур */}
+                <circle cx="150" cy="150" r="120" stroke="#FFFFFF" strokeWidth="4" />
+              </svg>
 
-          {/* Stone beads arranged in a circle */}
-          {selectedStones.length > 0 && (
-            <div className="relative z-10 mx-auto w-full max-w-[260px] md:max-w-[300px] aspect-square">
-              {selectedStones.map((stone, i) => {
+              {/* Stone beads arranged in a circle */}
+              {selectedStones.length > 0 && (
+                <div className="relative z-10 w-full h-full">
+                  {selectedStones.map((stone, i) => {
                 const imgUrl = stoneImageUrl(stone);
                 const total = selectedStones.length;
                 // Position around a circle (starting from top, going clockwise)
@@ -177,8 +178,10 @@ export default function Constructor({ stones }: ConstructorProps) {
                   </button>
                 );
               })}
+                </div>
+              )}
             </div>
-          )}
+          </div>
 
           {/* Empty state */}
           {selectedStones.length === 0 && (
